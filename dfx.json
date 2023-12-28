@@ -3,6 +3,7 @@
     "message_board": {
       "type": "custom",
       "main": "src/index.ts",
+      "root": "src",
       "candid": "src/index.did",
       "build": "npx azle message_board",
       "ts": "src/index.ts",
