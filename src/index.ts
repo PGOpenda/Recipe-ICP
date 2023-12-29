@@ -17,11 +17,11 @@ type RecipePayload = Record<{
     preparation: string;
 }>
 
-const recipeStorage = new StableBTreeMap<string, Recipe>(0, 44, 1024);
+const recipeStorage = new StableBTreeMap<string, Recipe>(0, 44, 1024)
 
 $query;
 export function getRecipes(): Result<Vec<Recipe>, string> {
-    return Result.Ok(recipeStorage.values());
+    return Result.Ok(recipeStorage.values())
 }
 
 $query;
@@ -29,7 +29,7 @@ export function getRecipeById(id: string): Result<Recipe, string> {
     return match(recipeStorage.get(id), {
         Some: (recipe) => Result.Ok<Recipe, string>(recipe),
         None: () => Result.Err<Recipe, string>(`Couldn't find the recipe with id=${id}. The Recipe does not exist.`)
-    });
+    })
 }
 
 $query
@@ -42,21 +42,21 @@ export function getRecipeByIngredients(ingredients: string): Result<Recipe, stri
 
 $update;
 export function addRecipe(payload: RecipePayload): Result<Recipe, string> {
-    const recipe: Recipe = { id: uuidv4(), createdAt: ic.time(), updatedAt: Opt.None, ...payload };
-    recipeStorage.insert(recipe.id, recipe);
-    return Result.Ok(recipe);
+    const recipe: Recipe = { id: uuidv4(), createdAt: ic.time(), updatedAt: Opt.None, ...payload }
+    recipeStorage.insert(recipe.id, recipe)
+    return Result.Ok(recipe)
 }
 
 $update;
 export function updateRecipe(id: string, payload: RecipePayload): Result<Recipe, string> {
     return match(recipeStorage.get(id), {
         Some: (recipe) => {
-            const updatedRecipe: Recipe = {...recipe, ...payload, updatedAt: Opt.Some(ic.time())};
-            recipeStorage.insert(recipe.id, updatedRecipe);
-            return Result.Ok<Recipe, string>(updatedRecipe);
+            const updatedRecipe: Recipe = {...recipe, ...payload, updatedAt: Opt.Some(ic.time())}
+            recipeStorage.insert(recipe.id, updatedRecipe)
+            return Result.Ok<Recipe, string>(updatedRecipe)
         },
         None: () => Result.Err<Recipe, string>(`Couldn't update the recipe with id=${id}. The Recipe could not be found.`)
-    });
+    })
 }
 
 $update;
