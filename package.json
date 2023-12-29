@@ -1,5 +1,5 @@
 {
-  "name": "dfinity_project",
+  "name": "dfinity_project_typescript",
   "main": "index.js",
   "dependencies": {
     "@dfinity/agent": "^0.15.6",

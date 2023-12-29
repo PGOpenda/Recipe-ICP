@@ -1,13 +1,13 @@
 {
   "canisters": {
-    "message_board": {
+    "recipe_panel": {
       "type": "custom",
       "main": "src/index.ts",
       "root": "src",
       "candid": "src/index.did",
-      "build": "npx azle message_board",
+      "build": "npx azle recipe_panel",
       "ts": "src/index.ts",
-      "wasm": ".azle/message_board/message_board.wasm",
+      "wasm": ".azle/recipe_panel/recipe_panel.wasm",
       "gzip": true
     }
   }
