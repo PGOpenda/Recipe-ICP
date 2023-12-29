@@ -25,11 +25,19 @@ export function getRecipes(): Result<Vec<Recipe>, string> {
 }
 
 $query;
-export function getRecipe(id: string): Result<Recipe, string> {
+export function getRecipeById(id: string): Result<Recipe, string> {
     return match(recipeStorage.get(id), {
-        Some: (message) => Result.Ok<Recipe, string>(message),
+        Some: (recipe) => Result.Ok<Recipe, string>(recipe),
         None: () => Result.Err<Recipe, string>(`Couldn't find the recipe with id=${id}. The Recipe does not exist.`)
     });
+}
+
+$query
+export function getRecipeByIngredients(ingredients: string): Result<Recipe, string> {
+    return match(recipeStorage.get(ingredients), {
+        Some: (recipe) => Result.Ok<Recipe, string>(recipe),
+        None: () => Result.Err<Recipe, string>(`Couldn't find the recipe with ingredients=${ingredients}. The Recipe could not be found.`) 
+    })
 }
 
 $update;
