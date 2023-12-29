@@ -28,16 +28,21 @@ $query;
 export function getRecipeById(id: string): Result<Recipe, string> {
     return match(recipeStorage.get(id), {
         Some: (recipe) => Result.Ok<Recipe, string>(recipe),
-        None: () => Result.Err<Recipe, string>(`Couldn't find the recipe with id=${id}. The Recipe does not exist.`)
+        None: () => Result.Err<Recipe, string>(`Couldn't find the recipe with id = ${id}.`)
     })
 }
 
 $query
-export function getRecipeByIngredients(ingredients: string): Result<Recipe, string> {
-    return match(recipeStorage.get(ingredients), {
-        Some: (recipe) => Result.Ok<Recipe, string>(recipe),
-        None: () => Result.Err<Recipe, string>(`Couldn't find the recipe with ingredients=${ingredients}. The Recipe could not be found.`) 
-    })
+export function getRecipeByIngredients(ingredient: string): Result<Recipe | Recipe[], string> {
+    const recipesWithIngredient = recipeStorage.values().filter(recipe =>
+        recipe.ingredients.toLowerCase().includes(ingredient.toLowerCase())
+    )
+
+    if (recipesWithIngredient.length > 0) {
+        return Result.Ok<Recipe | Recipe[], string>(recipesWithIngredient);
+    } else {
+        return Result.Err<Recipe | Recipe[], string>(`Couldn't find any recipes with the ingredient = ${ingredient}.`);
+    }
 }
 
 $update;
@@ -55,7 +60,7 @@ export function updateRecipe(id: string, payload: RecipePayload): Result<Recipe,
             recipeStorage.insert(recipe.id, updatedRecipe)
             return Result.Ok<Recipe, string>(updatedRecipe)
         },
-        None: () => Result.Err<Recipe, string>(`Couldn't update the recipe with id=${id}. The Recipe could not be found.`)
+        None: () => Result.Err<Recipe, string>(`Couldn't update the recipe with id = ${id}. The Recipe could not be found.`)
     })
 }
 
@@ -63,7 +68,7 @@ $update;
 export function deleteRecipe(id: string): Result<Recipe, string> {
     return match(recipeStorage.remove(id), {
         Some: (deletedRecipe) => Result.Ok<Recipe, string>(deletedRecipe),
-        None: () => Result.Err<Recipe, string>(`Couldn't delete the recipe with id=${id}. The Recipe could not be found.`)
+        None: () => Result.Err<Recipe, string>(`Couldn't delete the recipe with id = ${id}. The Recipe could not be found.`)
     });
 }
 

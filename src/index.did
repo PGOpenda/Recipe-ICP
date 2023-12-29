@@ -1,0 +1,23 @@
+type Recipe = record {
+  id : text;
+  title : text;
+  createdAt : nat64;
+  updatedAt : opt nat64;
+  preparation : text;
+  ingredients : text;
+};
+type RecipePayload = record {
+  title : text;
+  preparation : text;
+  ingredients : text;
+};
+type _AzleResult = variant { Ok : Recipe; Err : text };
+type _AzleResult_1 = variant { Ok : vec Recipe; Err : text };
+service : () -> {
+  addRecipe : (RecipePayload) -> (_AzleResult);
+  deleteRecipe : (text) -> (_AzleResult);
+  getRecipeById : (text) -> (_AzleResult) query;
+  getRecipeByIngredients : (text) -> (_AzleResult) query;
+  getRecipes : () -> (_AzleResult_1) query;
+  updateRecipe : (text, RecipePayload) -> (_AzleResult);
+}
