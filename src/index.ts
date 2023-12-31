@@ -31,19 +31,20 @@ export function getRecipeById(id: string): Result<Recipe, string> {
         None: () => Result.Err<Recipe, string>(`Couldn't find the recipe with id = ${id}.`)
     })
 }
+//Feature for searching recipes by ingredients
 
-$query
-export function getRecipeByIngredients(ingredient: string): Result<Recipe | Recipe[], string> {
-    const recipesWithIngredient = recipeStorage.values().filter(recipe =>
-        recipe.ingredients.toLowerCase().includes(ingredient.toLowerCase())
-    )
+// $query
+// export function getRecipeByIngredients(ingredient: string): Result<Recipe, string> {
+//     const recipesWithIngredient = recipeStorage.values().filter(recipe =>
+//         recipe.ingredients.toLowerCase().includes(ingredient.toLowerCase())
+//     )
 
-    if (recipesWithIngredient.length > 0) {
-        return Result.Ok<Recipe | Recipe[], string>(recipesWithIngredient);
-    } else {
-        return Result.Err<Recipe | Recipe[], string>(`Couldn't find any recipes with the ingredient = ${ingredient}.`);
-    }
-}
+//     if (recipesWithIngredient.length > 0) {
+//         return Result.Ok<Recipe, string>(recipesWithIngredient);
+//     } else {
+//         return Result.Err<Recipe, string>(`Couldn't find any recipes with the ingredient = ${ingredient}.`);
+//     }
+// }
 
 $update;
 export function addRecipe(payload: RecipePayload): Result<Recipe, string> {
