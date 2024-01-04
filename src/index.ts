@@ -48,6 +48,10 @@ export function getRecipeById(id: string): Result<Recipe, string> {
 
 $update;
 export function addRecipe(payload: RecipePayload): Result<Recipe, string> {
+    if (!payload.title || !payload.ingredients || !payload.preparation) {
+        return Result.Err<Recipe, string>("All fields must be filled.");
+    }
+
     const recipe: Recipe = { id: uuidv4(), createdAt: ic.time(), updatedAt: Opt.None, ...payload }
     recipeStorage.insert(recipe.id, recipe)
     return Result.Ok(recipe)
@@ -57,7 +61,7 @@ $update;
 export function updateRecipe(id: string, payload: RecipePayload): Result<Recipe, string> {
     return match(recipeStorage.get(id), {
         Some: (recipe) => {
-            const updatedRecipe: Recipe = {...recipe, ...payload, updatedAt: Opt.Some(ic.time())}
+            const updatedRecipe: Recipe = { ...recipe, ...payload, updatedAt: Opt.Some(ic.time()) }
             recipeStorage.insert(recipe.id, updatedRecipe)
             return Result.Ok<Recipe, string>(updatedRecipe)
         },
@@ -75,7 +79,7 @@ export function deleteRecipe(id: string): Result<Recipe, string> {
 
 // a workaround to make uuid package work with Azle
 globalThis.crypto = {
-     // @ts-ignore
+    // @ts-ignore
     getRandomValues: () => {
         let array = new Uint8Array(32);
 
